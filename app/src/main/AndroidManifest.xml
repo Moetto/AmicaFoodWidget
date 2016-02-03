@@ -23,7 +23,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/example_appwidget_info" />
+                android:resource="@xml/menu_info" />
         </receiver>
     </application>
 </manifest>
