@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello world"
-        android:background="@color/colorPrimaryDark"
-        android:id="@+id/menu_text"
-        />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <Button
+        android:id="@+id/update"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:background="@color/lightBackground"
-        android:id="@+id/update"
+        android:background="@color/lightBackground" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dish_list"
         />
 </LinearLayout>

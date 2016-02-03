@@ -1,42 +1,28 @@
 package com.moetto.amicafoodwidget;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.Ostermiller.util.CGIParser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 
 /**
- * Created by moetto on 2/3/16.
+ * Created by moetto on 03/02/16.
  */
-public class DownloadJSONTask extends AsyncTask<String, Void, JSONObject> {
-    public static final String TAG = "DownloadJSONTask";
-    JSONResultListener networkResultListener;
+public class URLDownloader {
+    private final static String TAG = "AmicaFood:URLDownloader";
 
-    public DownloadJSONTask(JSONResultListener networkResultListener) {
-        this.networkResultListener = networkResultListener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected JSONObject doInBackground(String... params) {
+    public static String downloadURL() {
         URL url;
         CGIParser cgiParser;
         try {
@@ -48,27 +34,17 @@ public class DownloadJSONTask extends AsyncTask<String, Void, JSONObject> {
             url = new URL("http://www.amica.fi/modules/json/json/Index?" + cgiParser.toString());
             Log.d(TAG, url.toString());
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), Charset.forName("UTF-8")));
-            return new JSONObject(readAll(reader));
+            return readAll(reader);
         } catch (UnsupportedEncodingException e) {
-            Log.d(TAG, "UTF-8 is not supported");
-            return new JSONObject();
+            Log.e(TAG, "UTF-8 is not supported");
         } catch (MalformedURLException e) {
-            Log.d(TAG, "Malformed URL");
-            return new JSONObject();
+            Log.e(TAG, "Malformed URL");
         } catch (IOException e) {
-            Log.d(TAG, "Error fetching menu");
-            return new JSONObject();
-        } catch (JSONException e) {
-            Log.d(TAG, "Error in JSON");
-            return new JSONObject();
+            Log.e(TAG, "Error fetching menu");
         }
+        return null;
     }
 
-    @Override
-    protected void onPostExecute(JSONObject s) {
-        super.onPostExecute(s);
-        networkResultListener.getResult(s);
-    }
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -77,4 +53,5 @@ public class DownloadJSONTask extends AsyncTask<String, Void, JSONObject> {
         }
         return sb.toString();
     }
+
 }

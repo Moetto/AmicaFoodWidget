@@ -45,10 +45,7 @@ public class SettingsActivity extends Activity {
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
-        createWidget(findViewById(R.id.menu_text));
-    }
 
-    public void createWidget(View view) {
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, result);
