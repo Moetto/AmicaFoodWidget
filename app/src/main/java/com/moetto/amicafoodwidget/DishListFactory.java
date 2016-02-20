@@ -5,22 +5,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.Ostermiller.util.CGIParser;
-
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 
 /**
  * Created by moetto on 03/02/16.
@@ -31,7 +17,7 @@ public class DishListFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = "AmicaFood:DishListFact";
 
     public DishListFactory() {
-        dishList = new ArrayList<String>();
+        dishList = new ArrayList<>();
         dishList.add("Updating");
     }
 

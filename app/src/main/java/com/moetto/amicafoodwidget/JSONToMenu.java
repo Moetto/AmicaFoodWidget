@@ -1,14 +1,13 @@
 package com.moetto.amicafoodwidget;
 
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by moetto on 03/02/16.

@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.Ostermiller.util.CGIParser;
 
-import org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Calendar;
+
 
 /**
  * Created by moetto on 03/02/16.

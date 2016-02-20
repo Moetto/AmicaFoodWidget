@@ -7,18 +7,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by moetto on 02/02/16.
@@ -27,7 +17,6 @@ public class MenuProvider extends AppWidgetProvider {
     private static final String CLICK_UPDATE = "click_update";
     private static final int requestCode = 1;
     private static final String TAG = "AmicaFood:MenuProvider";
-    private Context context;
 
     @Override
     public void onEnabled(Context context) {
@@ -37,7 +26,6 @@ public class MenuProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        this.context = context;
         Intent updateIntent = new Intent(context, MenuProvider.class);
         updateIntent.setAction(CLICK_UPDATE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, updateIntent, 0);
