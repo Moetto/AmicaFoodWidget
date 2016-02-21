@@ -12,7 +12,6 @@ import android.widget.RemoteViews;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 
@@ -22,19 +21,14 @@ import java.util.Locale;
 public class MenuProvider extends AppWidgetProvider {
     private static final String CLICK_UPDATE = "click_update",
             CLICK_PREVIOUS = "previous",
-            CLICK_NEXT = "next",
-            PREFERENCES = "preferences",
-            PREFERENCES_TIME = "time";
-    private static final int requestCode = 1;
+            CLICK_NEXT = "next";
+    private static final int update_code = 1, left_code = 2, right_code = 3;
     private static final String TAG = "AmicaFood:MenuProvider";
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES, 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(PREFERENCES_TIME, Calendar.getInstance().getTimeInMillis());
-        editor.commit();
+        PreferenceManager.setCalendar(context, Calendar.getInstance());
     }
 
     @Override
@@ -45,21 +39,21 @@ public class MenuProvider extends AppWidgetProvider {
 
         Intent update = new Intent(context, MenuProvider.class);
         update.setAction(CLICK_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, update, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, update_code, update, 0);
         remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
 
         Intent nextDate = new Intent(context, MenuProvider.class);
         nextDate.setAction(CLICK_NEXT);
-        pendingIntent = PendingIntent.getBroadcast(context, requestCode, nextDate, 0);
+        pendingIntent = PendingIntent.getBroadcast(context, right_code, nextDate, 0);
         remoteViews.setOnClickPendingIntent(R.id.arrow_right, pendingIntent);
 
         Intent previousDate = new Intent(context, MenuProvider.class);
         previousDate.setAction(CLICK_PREVIOUS);
-        pendingIntent = PendingIntent.getBroadcast(context, requestCode, previousDate, 0);
+        pendingIntent = PendingIntent.getBroadcast(context, left_code, previousDate, 0);
         remoteViews.setOnClickPendingIntent(R.id.arrow_left, pendingIntent);
 
         remoteViews.setRemoteAdapter(R.id.dish_list, new Intent(context, DishListService.class));
-        updateDate(remoteViews, R.id.date_text, getCalendar(context));
+        updateDate(remoteViews, R.id.date_text, PreferenceManager.getCalendar(context));
         appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
     }
 
@@ -81,9 +75,9 @@ public class MenuProvider extends AppWidgetProvider {
 
             case CLICK_PREVIOUS: {
                 Log.d(TAG, "Previous date");
-                Calendar calendar = getCalendar(context);
+                Calendar calendar = PreferenceManager.getCalendar(context);
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);
-                setCalendar(context, calendar);
+                PreferenceManager.setCalendar(context, calendar);
                 RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
                 updateDate(remoteViews, R.id.date_text, calendar);
                 appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
@@ -91,9 +85,9 @@ public class MenuProvider extends AppWidgetProvider {
             }
             case CLICK_NEXT: {
                 Log.d(TAG, "Next date");
-                Calendar calendar = getCalendar(context);
+                Calendar calendar = PreferenceManager.getCalendar(context);
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
-                setCalendar(context, calendar);
+                PreferenceManager.setCalendar(context, calendar);
                 RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
                 updateDate(remoteViews, R.id.date_text, calendar);
                 appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
@@ -105,18 +99,6 @@ public class MenuProvider extends AppWidgetProvider {
     private void updateDate(RemoteViews remoteViews, int textViewId, Calendar calendar) {
         remoteViews.setTextViewText(textViewId, new SimpleDateFormat("E dd.MM.", Locale.getDefault()).format(calendar.getTime()));
     }
-
-    private Calendar getCalendar(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCES, 0);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(preferences.getLong(PREFERENCES_TIME, calendar.getTimeInMillis()));
-        return calendar;
-    }
-
-    private void setCalendar(Context context, Calendar calendar) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFERENCES, 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(PREFERENCES_TIME, calendar.getTimeInMillis());
-        editor.apply();
-    }
 }
+
+
