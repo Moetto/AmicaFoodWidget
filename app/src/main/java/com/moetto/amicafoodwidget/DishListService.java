@@ -17,6 +17,7 @@ public class DishListService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         Log.d(TAG, "Creating new factory");
-        return new DishListFactory();
+
+        return new DishListFactory(this);
     }
 }

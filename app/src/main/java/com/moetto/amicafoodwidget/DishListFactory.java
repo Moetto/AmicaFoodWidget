@@ -1,5 +1,6 @@
 package com.moetto.amicafoodwidget;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 public class DishListFactory implements RemoteViewsService.RemoteViewsFactory {
     ArrayList<RemoteViews> dishes;
     ArrayList<String> dishList;
+    private Context context;
     private static final String TAG = "AmicaFood:DishListFact";
 
-    public DishListFactory() {
+    public DishListFactory(Context context) {
+        this.context = context;
         dishList = new ArrayList<>();
         dishList.add("Updating");
     }
@@ -53,7 +56,7 @@ public class DishListFactory implements RemoteViewsService.RemoteViewsFactory {
     public void onDataSetChanged() {
         Log.d(TAG, "Update requested");
         try {
-            dishList = new JSONToMenu(URLDownloader.downloadURL()).getDishList(0);
+            dishList = new JSONToMenu(URLDownloader.downloadURL(context)).getDishList(0);
             updateRemoteViews();
         } catch (JSONException e) {
             Log.e(TAG, Log.getStackTraceString(e));

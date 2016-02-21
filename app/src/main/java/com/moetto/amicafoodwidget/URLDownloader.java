@@ -1,5 +1,6 @@
 package com.moetto.amicafoodwidget;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.Ostermiller.util.CGIParser;
@@ -21,15 +22,15 @@ import java.util.Calendar;
 public class URLDownloader {
     private final static String TAG = "AmicaFood:URLDownloader";
 
-    public static String downloadURL() {
+    public static String downloadURL(Context context) {
         URL url;
         CGIParser cgiParser;
         try {
             cgiParser = new CGIParser("", "UTF-8");
             cgiParser.addParameter("costNumber", "0273");
             cgiParser.addParameter("language", "fi");
-            Calendar now = Calendar.getInstance();
-            cgiParser.addParameter("firstDay", now.get(Calendar.YEAR) + "-" + (1 + now.get(Calendar.MONTH)) + "-" + now.get(Calendar.DAY_OF_MONTH));
+            Calendar calendar = PreferenceManager.getCalendar(context);
+            cgiParser.addParameter("firstDay", calendar.get(Calendar.YEAR) + "-" + (1 + calendar.get(Calendar.MONTH)) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
             url = new URL("http://www.amica.fi/modules/json/json/Index?" + cgiParser.toString());
             Log.d(TAG, url.toString());
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), Charset.forName("UTF-8")));
