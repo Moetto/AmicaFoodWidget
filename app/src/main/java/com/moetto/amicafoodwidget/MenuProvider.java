@@ -8,13 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
  * Created by moetto on 02/02/16.
  */
 public class MenuProvider extends AppWidgetProvider {
-    private static final String CLICK_UPDATE = "click_update";
+    private static final String CLICK_UPDATE = "click_update",
+            CLICK_PREVIOUS = "previous",
+            CLICK_NEXT = "next";
     private static final int requestCode = 1;
     private static final String TAG = "AmicaFood:MenuProvider";
 
@@ -26,13 +34,27 @@ public class MenuProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Intent updateIntent = new Intent(context, MenuProvider.class);
-        updateIntent.setAction(CLICK_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, updateIntent, 0);
-
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
-        remoteViews.setRemoteAdapter(R.id.dish_list, new Intent(context, DishListService.class));
+
+        Intent update = new Intent(context, MenuProvider.class);
+        update.setAction(CLICK_UPDATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, update, 0);
         remoteViews.setOnClickPendingIntent(R.id.update, pendingIntent);
+
+        Intent nextDate = new Intent(context, MenuProvider.class);
+        nextDate.setAction(CLICK_NEXT);
+        pendingIntent = PendingIntent.getBroadcast(context, requestCode, nextDate, 0);
+        remoteViews.setOnClickPendingIntent(R.id.arrow_right, pendingIntent);
+
+        Intent previousDate = new Intent(context, MenuProvider.class);
+        previousDate.setAction(CLICK_PREVIOUS);
+        pendingIntent = PendingIntent.getBroadcast(context, requestCode, previousDate, 0);
+        remoteViews.setOnClickPendingIntent(R.id.arrow_left, pendingIntent);
+
+        remoteViews.setRemoteAdapter(R.id.dish_list, new Intent(context, DishListService.class));
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+        remoteViews.setTextViewText(R.id.date_text, new SimpleDateFormat("E dd.MM.", Locale.getDefault()).format(new Date()));
         appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
     }
 
@@ -41,12 +63,22 @@ public class MenuProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         Log.d(TAG, "Received intent");
         Log.d(TAG, intent.getAction());
-        if (intent.getAction().equals(CLICK_UPDATE)) {
-            Log.d(TAG, "Update intent");
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                    new ComponentName(context, MenuProvider.class));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.dish_list);
+        switch (intent.getAction()) {
+            case CLICK_UPDATE:
+                Log.d(TAG, "Update intent");
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                        new ComponentName(context, MenuProvider.class));
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.dish_list);
+                break;
+
+            case CLICK_PREVIOUS:
+                Log.d(TAG, "Previous date");
+                break;
+
+            case CLICK_NEXT:
+                Log.d(TAG, "Next date");
+                break;
         }
     }
 }

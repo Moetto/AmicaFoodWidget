@@ -4,15 +4,55 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/update"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@color/lightBackground" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightBlue">
+
+        <ImageButton
+            android:id="@+id/update"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:src="@android:drawable/stat_notify_sync" />
+
+        <ImageButton
+            android:id="@+id/arrow_left"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_toEndOf="@id/update"
+            android:background="@color/colorPrimaryDark"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow_left" />
+
+        <ImageButton
+            android:id="@+id/arrow_right"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_toEndOf="@id/arrow_left"
+            android:layout_toStartOf="@id/arrow_right"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+
+
+    </RelativeLayout>
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/dish_list"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
