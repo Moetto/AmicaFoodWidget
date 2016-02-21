@@ -15,7 +15,9 @@
             android:layout_height="30dp"
             android:layout_margin="10dp"
             android:background="@color/colorPrimaryDark"
-            android:src="@android:drawable/stat_notify_sync" />
+            android:src="@drawable/refresh"
+            android:scaleType="centerInside"
+            />
 
         <ImageButton
             android:id="@+id/arrow_left"

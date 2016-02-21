@@ -66,10 +66,12 @@ public class MenuProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
                 new ComponentName(context, MenuProvider.class));
-
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
         switch (intent.getAction()) {
             case CLICK_UPDATE:
                 Log.d(TAG, "Update intent");
+                remoteViews.setImageViewResource(R.id.update, R.drawable.refresh_active);
+                appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.dish_list);
                 break;
 
@@ -78,7 +80,6 @@ public class MenuProvider extends AppWidgetProvider {
                 Calendar calendar = PreferenceManager.getCalendar(context);
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);
                 PreferenceManager.setCalendar(context, calendar);
-                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
                 updateDate(remoteViews, R.id.date_text, calendar);
                 appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
                 break;
@@ -88,7 +89,6 @@ public class MenuProvider extends AppWidgetProvider {
                 Calendar calendar = PreferenceManager.getCalendar(context);
                 calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
                 PreferenceManager.setCalendar(context, calendar);
-                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
                 updateDate(remoteViews, R.id.date_text, calendar);
                 appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
                 break;

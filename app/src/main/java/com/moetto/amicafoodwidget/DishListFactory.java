@@ -1,5 +1,7 @@
 package com.moetto.amicafoodwidget;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -50,6 +52,10 @@ public class DishListFactory implements RemoteViewsService.RemoteViewsFactory {
         }
         RemoteViews remoteViews = new RemoteViews("com.moetto.amicafoodwidget", R.layout.dish);
         dishes.add(remoteViews);
+        RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.menu_layout);
+        widget.setImageViewResource(R.id.update, R.drawable.refresh);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        appWidgetManager.updateAppWidget(appWidgetManager.getAppWidgetIds(new ComponentName(context, MenuProvider.class)), widget);
     }
 
     @Override

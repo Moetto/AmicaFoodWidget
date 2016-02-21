@@ -20,4 +20,5 @@ public class DishListService extends RemoteViewsService {
 
         return new DishListFactory(this);
     }
+
 }
